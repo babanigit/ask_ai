@@ -16,8 +16,13 @@ export default function Home() {
   const askAI = async () => {
     setLoading(true);
     setResponse("");
+        
+    // const ENVIRONMENT = process.env.NEXT_PUBLIC_STREAM_ENV!;
+    const BACKEND_API = process.env.NEXT_PUBLIC_BACKEND_API!;
 
-    const res = await fetch("http://127.0.0.1:8000/api/ai/ask/", {
+    const res = await fetch(
+      BACKEND_API
+      , {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -97,15 +102,14 @@ export default function Home() {
               <div className="prose prose-invert prose-pre:bg-black prose-pre:shadow-inner max-w-none">
                 <ReactMarkdown
                   components={{
-                    code({ node, inline, className, children, ...props }) {
+                    code({ node, className, children, ...props }) {
                       const match = /language-(\w+)/.exec(className || "");
-                      return !inline && match ? (
+                      return  match ? (
                         <SyntaxHighlighter
                           style={vscDarkPlus}
                           language={match[1]}
                           PreTag="div"
                           className="rounded-md text-sm"
-                          {...props}
                         >
                           {String(children).replace(/\n$/, "")}
                         </SyntaxHighlighter>
