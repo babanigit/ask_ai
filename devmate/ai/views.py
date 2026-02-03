@@ -4,8 +4,11 @@ import json
 
 from ai.prompt import build_prompt
 from ai.services import ask_openai, ask_openai2
+from ratelimit.decorators import ratelimit
+
 
 @csrf_exempt
+@ratelimit(key="ip", rate="5/m", block=True)
 def ask_ai(request):
     if request.method != "POST":
         return JsonResponse({"error": "POST only"}, status=405)

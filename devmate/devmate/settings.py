@@ -71,6 +71,7 @@ MIDDLEWARE = [
     
     # CORS middleware
     'corsheaders.middleware.CorsMiddleware',
+    "django_ratelimit",
 ]
 
 ROOT_URLCONF = 'devmate.urls'
