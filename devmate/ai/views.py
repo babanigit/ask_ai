@@ -4,7 +4,8 @@ import json
 
 from ai.prompt import build_prompt
 from ai.services import ask_openai, ask_openai2
-from ratelimit.decorators import ratelimit
+# from ratelimit.decorators import ratelimit
+from django_ratelimit.decorators import ratelimit
 
 
 @csrf_exempt

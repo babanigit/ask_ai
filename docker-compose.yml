@@ -10,7 +10,7 @@ services:
       - ./devmate:/app
     env_file:
       - ./devmate/devmate/.env
-    restart: always
+    # restart: always
 
   frontend:
     build: ./devmate-ui
@@ -24,4 +24,4 @@ services:
       - backend
     env_file:
       - ./devmate-ui/.env
-    restart: always
+    # restart: always
