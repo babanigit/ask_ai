@@ -40,7 +40,9 @@ export default function Home() {
   return (
     <main className="min-h-screen text-black bg-gray-100 p-6">
       <div className="max-w-3xl mx-auto bg-white rounded-xl shadow p-6 space-y-4">
-        <h1 className="text-2xl font-bold">DevMate AI 🤖</h1>
+        <h1 className="text-2xl font-bold">DevMate AI 
+          {/* 🤖 */}
+          </h1>
 
         <div className="flex gap-2">
           <select
@@ -173,6 +175,15 @@ export default function Home() {
             </div>
           </div>
         )}
+
+        <div>
+          <div>
+            response:
+          </div>
+        {response}
+        </div>
+
+
       </div>
     </main>
   );

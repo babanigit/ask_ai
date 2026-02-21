@@ -19,10 +19,16 @@ import os
 load_dotenv()  # 👈 this line is critical
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-
 if not OPENROUTER_API_KEY:
     raise RuntimeError("OPENROUTER_API_KEY is not set")
 
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL")
+if not OPENROUTER_MODEL:
+    raise RuntimeError("OPENROUTER_MODEL is not set")
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError("SECRET_KEY is not set")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,7 +38,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+# SECRET_KEY = os.getenv("SECRET_KEY")
 
 # print("check env var Aniket :", SECRET_KEY)
 
@@ -71,7 +77,7 @@ MIDDLEWARE = [
     
     # CORS middleware
     'corsheaders.middleware.CorsMiddleware',
-    "django_ratelimit",
+    'django_ratelimit.middleware.RatelimitMiddleware',
 ]
 
 ROOT_URLCONF = 'devmate.urls'

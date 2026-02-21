@@ -24,7 +24,7 @@ def ask_openai(prompt):
 
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
-MODEL = "tngtech/deepseek-r1t2-chimera:free"
+MODEL = settings.OPENROUTER_MODEL
 
 def ask_openai2(prompt):
     logger, handler = get_request_logger()

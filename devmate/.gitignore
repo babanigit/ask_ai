@@ -2,3 +2,4 @@
 devmate/.env
 logs
 .venv
+venv
