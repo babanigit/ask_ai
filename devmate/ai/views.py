@@ -1,10 +1,12 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-
 from ai.prompt import build_prompt
 from ai.services import ask_openai, ask_openai2
+
+# from ratelimit.decorators import ratelimit
 from django_ratelimit.decorators import ratelimit
+
 
 @csrf_exempt
 @ratelimit(key="ip", rate="5/m", block=True)
