@@ -28,7 +28,6 @@ def ask_ai(request):
     prompt = build_prompt(language, intent, user_input)
     # ai_response = ask_openai(prompt)
     ai_response = ask_openai2(prompt)
-
     return JsonResponse({
         "response": ai_response
     })
