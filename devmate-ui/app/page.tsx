@@ -5,44 +5,60 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { IRequest, IResponse } from "./models/ai";
 
 export default function Home() {
-  const [input, setInput] = useState("");
-  const [language, setLanguage] = useState("javascript");
-  const [intent, setIntent] = useState("explain");
-  const [response, setResponse] = useState("");
+  
+  const [input, setInput] = useState<string>("");
+  const [language, setLanguage] = useState<string>("");
+  const [intent, setIntent] = useState<string>("explain");
+
+  const [response, setResponse] = useState<IResponse>({
+    success: false,
+    message: "",
+  });
+
+  // const [isSuccess, setIsSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const askAI = async () => {
     setLoading(true);
-    setResponse("");
-        
-    // const ENVIRONMENT = process.env.NEXT_PUBLIC_STREAM_ENV!;
+    setResponse({ success: false, message: "" });
+
     const BACKEND_API = process.env.NEXT_PUBLIC_BACKEND_API!;
 
-    const res = await fetch(
-      BACKEND_API
-      , {
+    const request_body: IRequest = {
+      language,
+      intent,
+      input,
+    };
+
+    const res = await fetch(BACKEND_API, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        language,
-        intent,
-        input,
-      }),
+      body: JSON.stringify(request_body),
     });
 
     const data = await res.json();
-    setResponse(data.response);
+
+    console.log("API response:", data);
+    // setIsSuccess(data.success);
+
+    setResponse({
+      success: data.success,
+      message: data.message,
+    });
+
     setLoading(false);
   };
 
   return (
     <main className="min-h-screen text-black bg-gray-100 p-6">
       <div className="max-w-3xl mx-auto bg-white rounded-xl shadow p-6 space-y-4">
-        <h1 className="text-2xl font-bold">DevMate AI 
+        <h1 className="text-2xl font-bold">
+          DevMate AI
           {/* 🤖 */}
-          </h1>
+        </h1>
 
         <div className="flex gap-2">
           <select
@@ -76,13 +92,14 @@ export default function Home() {
         <button
           onClick={askAI}
           disabled={loading}
-          className="bg-black text-white px-4 py-2 rounded hover:opacity-80"
+          className="bg-black text-white px-2 py-2 rounded hover:opacity-80"
         >
           {loading ? "Thinking..." : "Ask AI"}
         </button>
 
-        {response && (
-          <div className="mt-6 bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-2xl overflow-hidden border border-gray-700">
+        {/* success */}
+        {response.success && (
+          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-2xl overflow-hidden border border-gray-700">
             {/* Header */}
             <div className="bg-gray-800 px-4 py-3 border-b border-gray-700 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -92,7 +109,7 @@ export default function Home() {
                 </span>
               </div>
               <button
-                onClick={() => navigator.clipboard.writeText(response)}
+                onClick={() => navigator.clipboard.writeText(response.message)}
                 className="text-gray-400 hover:text-gray-200 text-xs px-2 py-1 rounded hover:bg-gray-700 transition-colors"
               >
                 Copy
@@ -106,7 +123,7 @@ export default function Home() {
                   components={{
                     code({ node, className, children, ...props }) {
                       const match = /language-(\w+)/.exec(className || "");
-                      return  match ? (
+                      return match ? (
                         <SyntaxHighlighter
                           style={vscDarkPlus}
                           language={match[1]}
@@ -169,21 +186,19 @@ export default function Home() {
                     ),
                   }}
                 >
-                  {response}
+                  {response.message}
                 </ReactMarkdown>
               </div>
             </div>
           </div>
         )}
 
-        <div>
-          <div>
-            response:
+        {/* error */}
+        {!response.success && response.message && (
+          <div className=" bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            {response.message}
           </div>
-        {response}
-        </div>
-
-
+        )}
       </div>
     </main>
   );
