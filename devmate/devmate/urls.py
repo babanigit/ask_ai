@@ -19,12 +19,14 @@ from django.urls import path, include
 
 from django.views.generic import TemplateView
 from django.urls import re_path
+from .view import frontend
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/ai/", include("ai.urls")),
-    
-    
+    re_path(r'^.*$', frontend),
+
     # Frontend fallback
-    re_path(r"^.*$", TemplateView.as_view(template_name="index.html")),
+    # re_path(r"^.*$", TemplateView.as_view(template_name="index.html")),
 ]

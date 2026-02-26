@@ -8,6 +8,13 @@ from ai.services import ask_openai, ask_openai2
 from django_ratelimit.decorators import ratelimit
 
 
+# from django.shortcuts import render
+
+# def frontend(request):
+#     return render(request, "index.html")
+
+
+
 @csrf_exempt
 @ratelimit(key="ip", rate="5/m", block=True)
 def ask_ai(request):
